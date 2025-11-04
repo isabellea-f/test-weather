@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.search-container {
+  margin: 2rem;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+input {
+  padding: 0.5rem 2rem;
+  margin: 0rem 1rem;
+  border-radius: 20px;
+  border: 1px solid gray;
+}
+
+button {
+  padding: 0.5rem 2rem;
+  border-radius: 20px;
+  border: none;
+}
+
+.container {
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+.col-1 {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.current-temp {
+  font-size: 4rem;
+}
