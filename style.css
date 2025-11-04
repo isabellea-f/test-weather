@@ -51,6 +51,7 @@ button {
   padding: 0.5rem 2rem;
   border-radius: 20px;
   border: none;
+  transition: background 0.3s ease;
 }
 
 button:hover {
@@ -106,4 +107,9 @@ button:hover {
   padding: 1rem;
   background: rgba(92, 90, 90, 0.274);
   border-radius: 16px;
+  transition: background 0.3s ease;
+}
+
+.forecast-card:hover {
+  background: rgba(92, 90, 90, 0.534);
 }
