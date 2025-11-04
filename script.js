@@ -76,7 +76,8 @@ async function getWeather() {
 
     const currentTemp = document.createElement("p");
     currentTemp.classList.add("current-temp");
-    currentTemp.textContent = result.current.temp_c;
+    currentTemp.innerHTML =
+      result.current.temp_c + "<span class='degree'>°C</span>";
 
     const currentCondition = document.createElement("p");
     currentCondition.textContent = result.current.condition.text;
@@ -119,7 +120,7 @@ async function getFutureWeather() {
       forecastIcon.src = "https:" + day.day.condition.icon;
 
       const forecastTemp = document.createElement("p");
-      forecastTemp.textContent = day.day.avgtemp_c + "°C";
+      forecastTemp.textContent = day.day.avgtemp_c;
 
       const forecastCard = document.createElement("div");
       forecastCard.classList.add("forecast-card");
