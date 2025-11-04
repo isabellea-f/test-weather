@@ -54,3 +54,9 @@ button {
 .current-temp {
   font-size: 4rem;
 }
+
+.forecast-card {
+  margin: 2rem 0;
+  padding: 1rem;
+  background-color: rgb(189, 187, 187);
+}

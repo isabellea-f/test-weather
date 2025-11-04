@@ -67,29 +67,31 @@ async function getFutureWeather() {
     const forecastResult = await response.json();
     console.log(forecastResult);
 
-    /* Condition */
-    const forecastCondition = document.createElement("p");
-    forecastCondition.textContent =
-      forecastResult.forecast.forecastday[0].day.condition.text;
-
-    /* Icon */
-    const forecastIcon = document.createElement("img");
-    forecastIcon.src =
-      "https:" + forecastResult.forecast.forecastday[0].day.condition.icon;
-
-    /* Temp */
-    const forecastTemp = document.createElement("p");
-    forecastTemp.textContent =
-      forecastResult.forecast.forecastday[0].day.avgtemp_c;
-
     /* Date */
-    const forecastDate = document.createElement("p");
-    forecastDate.textContent = forecastResult.forecast.forecastday[0].date;
+    forecastContainer.innerHTML = "";
 
-    forecastContainer.appendChild(forecastCondition);
-    forecastContainer.appendChild(forecastIcon);
-    forecastContainer.appendChild(forecastTemp);
-    forecastContainer.appendChild(forecastDate);
+    forecastResult.forecast.forecastday.forEach((day) => {
+      const forecastDate = document.createElement("p");
+      forecastDate.textContent = day.date;
+
+      const forecastCondition = document.createElement("p");
+      forecastCondition.textContent = day.day.condition.text;
+
+      const forecastIcon = document.createElement("img");
+      forecastIcon.src = "https:" + day.day.condition.icon;
+
+      const forecastTemp = document.createElement("p");
+      forecastTemp.textContent = day.day.avgtemp_c + "°C";
+
+      const forecastCard = document.createElement("div");
+      forecastCard.classList.add("forecast-card");
+      forecastCard.appendChild(forecastDate);
+      forecastCard.appendChild(forecastIcon);
+      forecastCard.appendChild(forecastCondition);
+      forecastCard.appendChild(forecastTemp);
+
+      forecastContainer.appendChild(forecastCard);
+    });
   } catch (error) {
     console.error(error.message);
   }
