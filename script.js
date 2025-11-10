@@ -1,10 +1,25 @@
+/*
+╔═══════════════════════════════╗
+║           TODO:               ║
+╟───────────────────────────────╢
+║ - Mark code                   ║
+║ - Create module render.js     ║
+║ - Create module services.js   ║
+║ - Move marked code to modules ║
+╚═══════════════════════════════╝
+*/
+
+// --------Imports---------
+
+// --------Imports---------
+
+
+// Global variables────┐
 const searchField = document.getElementById("search-field");
 const submitButton = document.getElementById("submit-button");
 const locationContainer = document.querySelector(".location-container");
 const temperatureContainer = document.querySelector(".temperature-container");
 const forecastContainer = document.querySelector(".forecast-container");
-
-let city = "";
 
 const backgrounds = {
   1000: "sun.jpg",
@@ -37,6 +52,10 @@ const backgrounds = {
   1276: "rain.jpg",
 };
 
+API_KEY = "079841c7855444b89b2102255250411";
+
+// Global variables ────┘
+
 submitButton.addEventListener("click", () => {
   city = searchField.value;
   console.log(city);
@@ -44,9 +63,8 @@ submitButton.addEventListener("click", () => {
   getFutureWeather();
 });
 
-API_KEY = "079841c7855444b89b2102255250411";
-
-/* Render to DOM */
+// ┌─ Move to MODULE: render.js ─────────────────────────────────────────────┐
+/* Render to DOM */ 
 function renderWeather(result) {
   locationContainer.innerHTML = "";
   temperatureContainer.innerHTML = "";
@@ -83,6 +101,11 @@ function renderWeather(result) {
 
   document.body.style.backgroundImage = "url('images/" + background + "')";
 }
+//└─ Move to MODULE: render.js ─────────────────────────────────────────────┘
+
+
+
+//Move to MODULE: services.js ───────────────────────────────────────────────────────┐
 
 /* Location on load */
 function weatherLocation() {}
@@ -103,6 +126,11 @@ async function getWeather() {
   }
 }
 
+//Move to MODULE: services.js ───────────────────────────────────────────────────────┘
+
+
+//Move to MODULE: services.js ───────────────────────────────────────────────────────────────┐
+
 /* Forecast */
 async function getFutureWeather() {
   const url = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=3`;
@@ -111,35 +139,41 @@ async function getFutureWeather() {
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
-
     const forecastResult = await response.json();
     console.log(forecastResult);
 
+// Move to MODULE: render.js ─────────────────────────────────────────────┐    
+    
     forecastContainer.innerHTML = "";
-
+    
     forecastResult.forecast.forecastday.forEach((day) => {
       const forecastDate = document.createElement("p");
       forecastDate.textContent = day.date;
-
+      
       const forecastCondition = document.createElement("p");
       forecastCondition.textContent = day.day.condition.text;
-
+      
       const forecastIcon = document.createElement("img");
       forecastIcon.src = "https:" + day.day.condition.icon;
-
+      
       const forecastTemp = document.createElement("p");
       forecastTemp.textContent = day.day.avgtemp_c;
-
+      
       const forecastCard = document.createElement("div");
       forecastCard.classList.add("forecast-card");
       forecastCard.appendChild(forecastDate);
       forecastCard.appendChild(forecastIcon);
       forecastCard.appendChild(forecastCondition);
       forecastCard.appendChild(forecastTemp);
-
+      
       forecastContainer.appendChild(forecastCard);
     });
+
+// Move to MODULE: render.js ─────────────────────────────────────────────┘
+
   } catch (error) {
     console.error(error.message);
   }
 }
+
+//Move to MODULE: services.js ───────────────────────────────────────────────────────────────┘
