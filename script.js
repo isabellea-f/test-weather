@@ -4,7 +4,7 @@ const locationContainer = document.querySelector(".location-container");
 const temperatureContainer = document.querySelector(".temperature-container");
 const forecastContainer = document.querySelector(".forecast-container");
 
-let city = "";
+// let city = "";
 
 const backgrounds = {
   1000: "sun.jpg",
@@ -38,16 +38,17 @@ const backgrounds = {
 };
 
 submitButton.addEventListener("click", () => {
-  city = searchField.value;
+  let city = searchField.value;
   console.log(city);
-  getWeather();
-  getFutureWeather();
+  getWeather(city);
+  getFutureWeather(city);
+  new Searched(city);
 });
 
 API_KEY = "079841c7855444b89b2102255250411";
 
 /* Current weather */
-async function getWeather() {
+async function getWeather(city) {
   const url = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`;
 
   try {
@@ -96,7 +97,7 @@ async function getWeather() {
 }
 
 /* Forecast */
-async function getFutureWeather() {
+async function getFutureWeather(city) {
   const url = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=3`;
   try {
     const response = await fetch(url);
@@ -133,5 +134,23 @@ async function getFutureWeather() {
     });
   } catch (error) {
     console.error(error.message);
+  }
+}
+
+class Searched {
+  constructor(city) {
+    this.city = city;
+    this.el = document.createElement("div");
+    this.el.classList.add("prev-searched");
+    this.el.textContent = this.city;
+
+    this.p = document.createElement("p");
+
+    document.querySelector("#search-cont").append(this.el);
+
+    this.el.addEventListener("click", () => {
+      getWeather(city);
+      getFutureWeather(city);
+    });
   }
 }

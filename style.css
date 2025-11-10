@@ -113,3 +113,16 @@ button:hover {
 .forecast-card:hover {
   background: rgba(92, 90, 90, 0.534);
 }
+#search-cont {
+  border: 3px solid black;
+  width: 200px;
+  height: 80vh;
+}
+.prev-searched {
+  width: 200px;
+  height: 200px;
+  border: 2px black solid;
+}
+.prev-searched:hover {
+  cursor: pointer;
+}
