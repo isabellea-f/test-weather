@@ -86,7 +86,35 @@ function renderWeather(result) {
 }
 
 /* Location on load */
-function weatherLocation() {}
+
+const options = {
+  minimumAge: 0, //dont use cached results, refresh position
+  enableHighAccuracy: false, //faster, less precise position
+  timeout: 15000, //max time before error callback
+};
+
+const success = (pos) => {
+  const coords = pos.coords;
+  getWeatherByLocation(coords.latitude, coords.longitude);
+};
+
+const error = (err) => {
+  console.log(err);
+};
+
+navigator.geolocation.getCurrentPosition(success, error, options);
+async function getWeatherByLocation(lat, long) {
+  const url = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${lat},${long}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Response status: ${response.status}`);
+    const result = await response.json();
+    renderWeather(result);
+  } catch (error) {
+    console.error(error.message);
+  }
+}
 
 /* Current weather */
 async function getWeather(city) {
