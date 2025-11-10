@@ -52,7 +52,7 @@ addEventListener("load", (event) => {
 });
 
 /* Forecast */
-async function getFutureWeather() {
+/* async function getFutureWeather() {
   const url = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=Stockholm&days=3`;
   try {
     const response = await fetch(url);
@@ -93,3 +93,4 @@ async function getFutureWeather() {
 }
 
 getFutureWeather();
+ */
