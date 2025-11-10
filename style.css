@@ -126,3 +126,32 @@ button:hover {
 .prev-searched:hover {
   cursor: pointer;
 }
+
+@media (max-width: 760px) {
+  .search-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  button {
+    margin-top: 1rem;
+    width: 10rem;
+  }
+
+  .container {
+    flex-direction: column;
+    border-radius: 0;
+    align-items: center;
+    padding: 2rem;
+    height: auto;
+  }
+
+  .col-1 {
+    min-height: 40vh;
+  }
+
+  .forecast-card {
+    width: 100%;
+    width: 18rem;
+  }
+}
