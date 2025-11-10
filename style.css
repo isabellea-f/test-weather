@@ -60,7 +60,7 @@ button:hover {
 }
 
 .container {
-  max-width: 60rem;
+  max-width: 80rem;
   height: 65vh;
   margin: 0 auto;
   display: flex;
@@ -97,6 +97,10 @@ button:hover {
   font-weight: 300;
 }
 
+.col-3 {
+  min-height: 60vh;
+}
+
 .current-temp {
   font-size: 8rem;
   font-weight: 300;
@@ -110,8 +114,33 @@ button:hover {
   transition: background 0.3s ease;
 }
 
-.forecast-card:hover {
+.forecast-card:hover,
+.prev-searched:hover {
   background: rgba(92, 90, 90, 0.534);
+}
+
+#search-cont {
+  margin: 2rem;
+}
+
+.prev-searched {
+  position: relative;
+  width: 200px;
+  background: rgba(97, 98, 104, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin: 0.8rem;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.prev-searched::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.253);
+  z-index: -1;
 }
 
 @media (max-width: 760px) {

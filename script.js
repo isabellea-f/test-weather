@@ -3,7 +3,9 @@ const submitButton = document.getElementById("submit-button");
 const locationContainer = document.querySelector(".location-container");
 const temperatureContainer = document.querySelector(".temperature-container");
 const forecastContainer = document.querySelector(".forecast-container");
-API_KEY = "079841c7855444b89b2102255250411";
+const prevContainer = document.getElementById("search-cont");
+
+const API_KEY = "079841c7855444b89b2102255250411";
 
 const backgrounds = {
   1000: "sun.jpg",
@@ -136,6 +138,8 @@ function renderWeather(result) {
   let background = backgrounds[currentConditionCode];
 
   document.body.style.backgroundImage = "url('images/" + background + "')";
+
+  new Searched(result.location.name, background);
 }
 
 /* Featch forecast */
@@ -185,19 +189,19 @@ function renderForecast(result) {
 
 /* Previous searches */
 class Searched {
-  constructor(city) {
-    this.city = city;
-    this.el = document.createElement("div");
-    this.el.classList.add("prev-searched");
-    this.el.textContent = this.city;
+  constructor(city, background) {
+    const el = document.createElement("div");
+    el.classList.add("prev-searched");
+    el.textContent = city;
+    el.style.backgroundImage = "url('images/" + background + "')";
+    el.style.backgroundSize = "cover";
+    el.style.color = "white";
 
-    this.p = document.createElement("p");
-
-    document.querySelector("#search-cont").append(this.el);
-
-    this.el.addEventListener("click", () => {
+    el.addEventListener("click", () => {
       getWeather(city);
       getFutureWeather(city);
     });
+
+    document.getElementById("search-cont").append(el);
   }
 }
