@@ -6,6 +6,8 @@ const forecastContainer = document.querySelector(".forecast-container");
 
 // let city = "";
 
+// let city = "";
+
 const backgrounds = {
   1000: "sun.jpg",
 
@@ -47,6 +49,7 @@ function submit(event) {
     console.log(city);
     getWeather(city);
     getFutureWeather(city);
+    new Searched(city);
   }
 }
 
@@ -177,5 +180,23 @@ async function getFutureWeather(city) {
     });
   } catch (error) {
     console.error(error.message);
+  }
+}
+
+class Searched {
+  constructor(city) {
+    this.city = city;
+    this.el = document.createElement("div");
+    this.el.classList.add("prev-searched");
+    this.el.textContent = this.city;
+
+    this.p = document.createElement("p");
+
+    document.querySelector("#search-cont").append(this.el);
+
+    this.el.addEventListener("click", () => {
+      getWeather(city);
+      getFutureWeather(city);
+    });
   }
 }
