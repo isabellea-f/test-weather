@@ -6,8 +6,6 @@ const forecastContainer = document.querySelector(".forecast-container");
 
 // let city = "";
 
-// let city = "";
-
 const backgrounds = {
   1000: "sun.jpg",
 
@@ -49,7 +47,6 @@ function submit(event) {
     console.log(city);
     getWeather(city);
     getFutureWeather(city);
-    new Searched(city);
   }
 }
 
@@ -137,6 +134,11 @@ async function getWeather(city) {
     }
     const result = await response.json();
     renderWeather(result);
+    new Searched(
+      result.location.name,
+      result.current.temp_c,
+      result.current.condition.icon
+    );
   } catch (error) {
     console.error(error.message);
   }
@@ -184,19 +186,39 @@ async function getFutureWeather(city) {
 }
 
 class Searched {
-  constructor(city) {
+  static prevList = [];
+
+  constructor(city, temp, icon) {
     this.city = city;
-    this.el = document.createElement("div");
-    this.el.classList.add("prev-searched");
-    this.el.textContent = this.city;
+    this.temp = temp;
+    this.icon = icon;
+    this.render();
+  }
 
-    this.p = document.createElement("p");
+  render() {
+    if (!Searched.prevList.includes(this.city)) {
+      Searched.prevList.push(this.city);
+      const container = document.createElement("div");
+      container.classList.add("prev-searched");
 
-    document.querySelector("#search-cont").append(this.el);
+      const cityCont = document.createElement("p");
+      cityCont.textContent = this.city;
 
-    this.el.addEventListener("click", () => {
-      getWeather(city);
-      getFutureWeather(city);
-    });
+      const img = document.createElement("img");
+      img.src = this.icon;
+
+      const p = document.createElement("p");
+      p.textContent = this.temp;
+
+      document.querySelector("#search-cont").append(container);
+      container.append(cityCont, p, img);
+
+      container.addEventListener("click", () => {
+        getWeather(this.city);
+        getFutureWeather(this.city);
+      });
+    } else {
+      console.log("city already exists");
+    }
   }
 }
