@@ -3,9 +3,8 @@ const submitButton = document.getElementById("submit-button");
 const locationContainer = document.querySelector(".location-container");
 const temperatureContainer = document.querySelector(".temperature-container");
 const forecastContainer = document.querySelector(".forecast-container");
+API_KEY = "079841c7855444b89b2102255250411";
 
-/* let city = "";
- */
 const backgrounds = {
   1000: "sun.jpg",
 
@@ -53,9 +52,55 @@ function submit(event) {
 submitButton.addEventListener("click", submit);
 searchField.addEventListener("keydown", submit);
 
-API_KEY = "079841c7855444b89b2102255250411";
+/* Location on load */
+const options = {
+  minimumAge: 0, //dont use cached results, refresh position
+  enableHighAccuracy: false, //faster, less precise position
+  timeout: 15000, //max time before error callback
+};
 
-/* Render to DOM */
+const success = (pos) => {
+  const coords = pos.coords;
+  getWeatherByLocation(coords.latitude, coords.longitude);
+};
+
+const error = (err) => {
+  console.log(err);
+};
+
+navigator.geolocation.getCurrentPosition(success, error, options);
+async function getWeatherByLocation(lat, long) {
+  const url = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${lat},${long}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Response status: ${response.status}`);
+    const result = await response.json();
+
+    renderWeather(result);
+    getFutureWeather(`${lat},${long}`);
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+/* Current weather */
+async function getWeather(city) {
+  const url = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+    const result = await response.json();
+    renderWeather(result);
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+/* Render current weather to DOM */
 function renderWeather(result) {
   locationContainer.innerHTML = "";
   temperatureContainer.innerHTML = "";
@@ -93,53 +138,7 @@ function renderWeather(result) {
   document.body.style.backgroundImage = "url('images/" + background + "')";
 }
 
-/* Location on load */
-const options = {
-  minimumAge: 0, //dont use cached results, refresh position
-  enableHighAccuracy: false, //faster, less precise position
-  timeout: 15000, //max time before error callback
-};
-
-const success = (pos) => {
-  const coords = pos.coords;
-  getWeatherByLocation(coords.latitude, coords.longitude);
-};
-
-const error = (err) => {
-  console.log(err);
-};
-
-navigator.geolocation.getCurrentPosition(success, error, options);
-async function getWeatherByLocation(lat, long) {
-  const url = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${lat},${long}`;
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`Response status: ${response.status}`);
-    const result = await response.json();
-    renderWeather(result);
-  } catch (error) {
-    console.error(error.message);
-  }
-}
-
-/* Current weather */
-async function getWeather(city) {
-  const url = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`;
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-    const result = await response.json();
-    renderWeather(result);
-  } catch (error) {
-    console.error(error.message);
-  }
-}
-
-/* Forecast */
+/* Featch forecast */
 async function getFutureWeather(city) {
   const url = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=3`;
   try {
@@ -150,34 +149,38 @@ async function getFutureWeather(city) {
 
     const forecastResult = await response.json();
     console.log(forecastResult);
-
-    forecastContainer.innerHTML = "";
-
-    forecastResult.forecast.forecastday.forEach((day) => {
-      const forecastDate = document.createElement("p");
-      forecastDate.textContent = day.date;
-
-      const forecastCondition = document.createElement("p");
-      forecastCondition.textContent = day.day.condition.text;
-
-      const forecastIcon = document.createElement("img");
-      forecastIcon.src = "https:" + day.day.condition.icon;
-
-      const forecastTemp = document.createElement("p");
-      forecastTemp.textContent = day.day.avgtemp_c;
-
-      const forecastCard = document.createElement("div");
-      forecastCard.classList.add("forecast-card");
-      forecastCard.appendChild(forecastDate);
-      forecastCard.appendChild(forecastIcon);
-      forecastCard.appendChild(forecastCondition);
-      forecastCard.appendChild(forecastTemp);
-
-      forecastContainer.appendChild(forecastCard);
-    });
+    renderForecast(forecastResult);
   } catch (error) {
     console.error(error.message);
   }
+}
+
+/* Render forecast to DOM */
+function renderForecast(result) {
+  forecastContainer.innerHTML = "";
+
+  result.forecast.forecastday.forEach((day) => {
+    const forecastDate = document.createElement("p");
+    forecastDate.textContent = day.date;
+
+    const forecastCondition = document.createElement("p");
+    forecastCondition.textContent = day.day.condition.text;
+
+    const forecastIcon = document.createElement("img");
+    forecastIcon.src = "https:" + day.day.condition.icon;
+
+    const forecastTemp = document.createElement("p");
+    forecastTemp.textContent = day.day.avgtemp_c;
+
+    const forecastCard = document.createElement("div");
+    forecastCard.classList.add("forecast-card");
+    forecastCard.appendChild(forecastDate);
+    forecastCard.appendChild(forecastIcon);
+    forecastCard.appendChild(forecastCondition);
+    forecastCard.appendChild(forecastTemp);
+
+    forecastContainer.appendChild(forecastCard);
+  });
 }
 
 /* Previous searches */
