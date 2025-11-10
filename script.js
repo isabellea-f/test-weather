@@ -37,13 +37,21 @@ const backgrounds = {
   1276: "rain.jpg",
 };
 
-submitButton.addEventListener("click", () => {
-  let city = searchField.value;
-  console.log(city);
-  getWeather(city);
-  getFutureWeather(city);
-  new Searched(city);
-});
+function submit(event) {
+  if (
+    event.type === "click" ||
+    (event.type === "keydown" && event.key === "Enter")
+  ) {
+    event.preventDefault();
+    let city = searchField.value;
+    console.log(city);
+    getWeather(city);
+    getFutureWeather(city);
+  }
+}
+
+submitButton.addEventListener("click", submit);
+searchField.addEventListener("keydown", submit);
 
 API_KEY = "079841c7855444b89b2102255250411";
 
@@ -169,23 +177,5 @@ async function getFutureWeather(city) {
     });
   } catch (error) {
     console.error(error.message);
-  }
-}
-
-class Searched {
-  constructor(city) {
-    this.city = city;
-    this.el = document.createElement("div");
-    this.el.classList.add("prev-searched");
-    this.el.textContent = this.city;
-
-    this.p = document.createElement("p");
-
-    document.querySelector("#search-cont").append(this.el);
-
-    this.el.addEventListener("click", () => {
-      getWeather(city);
-      getFutureWeather(city);
-    });
   }
 }
