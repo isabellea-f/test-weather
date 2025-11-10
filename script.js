@@ -85,7 +85,6 @@ function renderWeather(result) {
 }
 
 /* Location on load */
-
 const options = {
   minimumAge: 0, //dont use cached results, refresh position
   enableHighAccuracy: false, //faster, less precise position
