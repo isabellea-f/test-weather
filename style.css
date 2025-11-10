@@ -68,7 +68,7 @@ button:hover {
   align-items: flex-start;
   padding: 4rem;
   color: var(--white-color);
-  background: rgba(97, 98, 104, 0.2);
+  background: rgba(97, 98, 104, 0.342);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
@@ -109,7 +109,7 @@ button:hover {
 .forecast-card {
   margin: 1rem 0;
   padding: 1rem;
-  background: rgba(92, 90, 90, 0.274);
+  background: rgba(92, 90, 90, 0.404);
   border-radius: 16px;
   transition: background 0.3s ease;
 }
