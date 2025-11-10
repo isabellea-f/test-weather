@@ -164,7 +164,12 @@ function renderWeather(result) {
 
   document.body.style.backgroundImage = "url('images/" + background + "')";
 
-  new Searched(result.location.name, background);
+  new Searched(
+    result.location.name,
+    result.current.temp_c,
+    result.current.condition.icon,
+    background
+  );
 }
 
 /* Fetch forecast */
@@ -214,19 +219,44 @@ function renderForecast(result) {
 
 /* Previous searches */
 class Searched {
-  constructor(city, background) {
-    const el = document.createElement("div");
-    el.classList.add("prev-searched");
-    el.textContent = city;
-    el.style.backgroundImage = "url('images/" + background + "')";
-    el.style.backgroundSize = "cover";
-    el.style.color = "white";
+  static prevList = [];
 
-    el.addEventListener("click", () => {
-      getWeather(city);
-      getFutureWeather(city);
-    });
+  constructor(city, temp, icon, background) {
+    this.city = city;
+    this.temp = temp;
+    this.icon = icon;
+    this.background = background;
+    this.render();
+  }
+  render() {
+    if (!Searched.prevList.includes(this.city)) {
+      Searched.prevList.push(this.city);
+      const container = document.createElement("div");
+      container.classList.add("prev-searched");
 
-    document.getElementById("search-cont").append(el);
+      const cityCont = document.createElement("p");
+      cityCont.textContent = this.city;
+
+      const img = document.createElement("img");
+      img.src = this.icon;
+
+      const p = document.createElement("p");
+      p.textContent = this.temp;
+
+      document.querySelector("#search-cont").append(container);
+      container.append(cityCont, p, img);
+
+      const el = document.createElement("div");
+      el.style.backgroundImage = "url('images/" + this.background + "')";
+      el.style.backgroundSize = "cover";
+      el.style.color = "white";
+
+      container.addEventListener("click", () => {
+        getWeather(this.city);
+        getFutureWeather(this.city);
+      });
+    } else {
+      console.log("city already exists");
+    }
   }
 }
